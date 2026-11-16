@@ -78,6 +78,7 @@ tmux_conf_24b_colour=auto
 # Switch with <prefix> C-t (picker) or <prefix> M-t (cycle): scripts/theme.sh
 source-file "$HOME/.config/tmux/themes/_base.conf"
 source-file -q "$HOME/.config/tmux/themes/current.conf"
+source-file "$HOME/.config/tmux/themes/_info.conf"
 
 
 # -- clipboard -----------------------------------------------------------------
@@ -134,7 +135,7 @@ bind r source-file ~/.config/tmux/tmux.conf \; display 'tmux.conf sourced'
 # redraw status line every second so the seconds field (and animations) are live
 set -g status-interval 1
 
-# status position, row count and message row come from the theme (themes/)
+# status position and row count come from the theme and themes/_info.conf
 bind C-t run "~/.config/tmux/scripts/theme.sh menu '#{client_name}'"
 bind M-t run "~/.config/tmux/scripts/theme.sh next"
 
@@ -142,9 +143,15 @@ bind M-t run "~/.config/tmux/scripts/theme.sh next"
 bind B display-popup -E -w 85% -h 85% -T '  system ' btop
 bind W display-popup -E -w 85% -h 75% -T '  jump ' ~/.config/tmux/scripts/jump.sh
 
-# public IP in neon-hud/rosepine is hidden by default (screen sharing); <prefix> N
-# toggles it, or add `set -g @show-wan-ip on` here to keep it on
+# public IP on the info row: on by default (kept across reloads); <prefix> N hides
+# or shows it, e.g. while sharing your screen
+if -F '#{==:#{@show-wan-ip},}' 'set -g @show-wan-ip on'
 bind N if -F '#{==:#{@show-wan-ip},on}' 'set -g @show-wan-ip off' 'set -g @show-wan-ip on' \; display 'WAN IP #{?#{==:#{@show-wan-ip},on},shown,hidden}'
+
+# re-fit the info rows to the client's width when it attaches or resizes (scripts/fit.sh)
+set-hook -g client-attached[90] 'run -b "~/.config/tmux/scripts/fit.sh #{client_width}"'
+set-hook -g client-resized[90] 'run -b "~/.config/tmux/scripts/fit.sh #{client_width}"'
+run -b '~/.config/tmux/scripts/fit.sh'
 
 
 # -- tpm -----------------------------------------------------------------------
