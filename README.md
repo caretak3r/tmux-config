@@ -104,7 +104,7 @@ themes/_info.conf    the info row(s), added below the rows of the active theme
 themes/current.conf  link to the active theme (machine-local, not in git)
 scripts/theme.sh     theme picker and switcher
 scripts/hud.sh       CPU, memory, GPU, network and load for the info row (neon, signal or any palette)
-scripts/fit.sh       reloads the config when the window crosses 220 columns
+scripts/fit.sh       re-applies the info row(s) when the terminal crosses 220 columns
 scripts/anim.sh      status-bar animations (scan, pulse, spin, train, rainbow, cycle)
 scripts/ooo.pl       Adventure Time pixel-art stage (8 fps, half-block pixels)
 scripts/ooo.sh       opens and closes the stage
