@@ -76,7 +76,7 @@ tmux_conf_24b_colour=auto
 
 # Themes live in themes/<name>.conf; themes/current.conf symlinks the active one.
 # Switch with <prefix> C-t (picker) or <prefix> M-t (cycle): scripts/theme.sh
-source-file "$HOME/.config/tmux/themes/_reset.conf"
+source-file "$HOME/.config/tmux/themes/_base.conf"
 source-file -q "$HOME/.config/tmux/themes/current.conf"
 
 
@@ -131,21 +131,16 @@ bind Y setw synchronize-panes \; display 'synchronize-panes #{?synchronize-panes
 # reload without depending on Oh my tmux!'s $TMUX_PROGRAM shell environment
 bind r source-file /Users/rohit/.config/tmux/tmux.conf \; display '/Users/rohit/.config/tmux/tmux.conf sourced'
 
-# redraw status line every second so the seconds field is actually live
+# redraw status line every second so the seconds field (and animations) are live
 set -g status-interval 1
 
-# move status line to top
-set -g status-position top
-
-# status rows (count, pane list, HUD) come from the theme; the command
-# prompt/messages take row 2 so `prefix :` never overwrites the window list
-set -g message-line 1
-
+# status position, row count and message row come from the theme (themes/)
 bind C-t run "~/.config/tmux/scripts/theme.sh menu '#{client_name}'"
 bind M-t run "~/.config/tmux/scripts/theme.sh next"
 
-# floating system monitor overlay
-bind B display-popup -E -w 85% -h 85% -b heavy -S 'fg=#00e5ff' -T '  SYSTEM ' btop
+# popups pick up the theme's popup-border-* styles
+bind B display-popup -E -w 85% -h 85% -T '  system ' btop
+bind W display-popup -E -w 85% -h 75% -T '  jump ' ~/.config/tmux/scripts/jump.sh
 
 
 # -- tpm -----------------------------------------------------------------------
