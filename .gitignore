@@ -1,3 +1,4 @@
 plugins/
 *.bak*
 themes/current.conf
+tmux.conf

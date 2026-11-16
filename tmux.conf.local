@@ -129,7 +129,7 @@ bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?
 bind Y setw synchronize-panes \; display 'synchronize-panes #{?synchronize-panes,on,off}'
 
 # reload without depending on Oh my tmux!'s $TMUX_PROGRAM shell environment
-bind r source-file /Users/rohit/.config/tmux/tmux.conf \; display '/Users/rohit/.config/tmux/tmux.conf sourced'
+bind r source-file ~/.config/tmux/tmux.conf \; display 'tmux.conf sourced'
 
 # redraw status line every second so the seconds field (and animations) are live
 set -g status-interval 1
