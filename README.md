@@ -17,7 +17,7 @@ tmux
 1. Installs `tmux`, `fzf`, `btop`, `git` and the Agave Nerd Font with Homebrew.
 2. Clones oh-my-tmux to `~/.local/share/tmux/oh-my-tmux` at the tested commit and links `~/.config/tmux/tmux.conf` to it.
 3. Moves an old `~/.tmux.conf` to `~/.tmux.conf.bak-<date>`. tmux reads that file first, so it would hide this config.
-4. Selects the first theme (`adventure`). To select a different one, set `TMUX_THEME`, for example `TMUX_THEME=zen ./install.sh`.
+4. Selects the theme. The first install uses `adventure`. To select a different one, set `TMUX_THEME`, for example `TMUX_THEME=zen ./install.sh`. A second run keeps the current theme unless you set `TMUX_THEME`. The script checks the name before it changes anything.
 
 The first `tmux` start installs [tpm](https://github.com/tmux-plugins/tpm) and the plugins.
 
@@ -39,6 +39,9 @@ The prefix is `C-a`.
 | `C-a Y` | Synchronize the panes in the window. |
 | `C-a r` | Reload the config. |
 | `C-a m` | Turn the mouse on or off. |
+| `C-a N` | Show or hide your public IP address (neon-hud, rosepine). |
+
+The public IP address is hidden by default, because the status bar is visible when you share your screen. To always show it, add `set -g @show-wan-ip on` to `tmux.conf.local`.
 
 The oh-my-tmux keys also apply. Refer to its [README](https://github.com/gpakosz/.tmux#bindings).
 
@@ -58,19 +61,19 @@ Catppuccin Mocha. Rounded tabs, one icon for each program in a window, and a loa
 
 ### neon-hud
 
-Cyan and magenta on black. A third status row shows a CPU sparkline, a memory gauge, network speed, the load average, IP addresses and free disk space. Each pane has a title bar.
+Cyan and magenta on black. The second status row lists the panes, the IP addresses and free disk space. The third row shows a CPU sparkline, a memory gauge, network speed and the load average. Each pane has a title bar.
 
 ![neon-hud](assets/neon-hud.png)
 
 ### phosphor
 
-An amber CRT. It has a KITT scanner and lamps that come on for prefix, copy mode, zoom, sync and alerts. It also shows CPU and network traces that fade like phosphor, a hex bus readout, binary seconds, and a moving square wave on the active pane border.
+An amber CRT. The first status row has a KITT scanner, the windows and the clock. The second row has lamps that come on for prefix, copy mode, zoom, sync and alerts, CPU and network traces that fade like phosphor, a hex bus readout and binary seconds. The active pane border has a moving square wave.
 
 ![phosphor](assets/phosphor.png)
 
 ### rosepine
 
-The original Rosé Pine setup.
+The original Rosé Pine setup. The second status row lists the panes, the IP addresses and free disk space.
 
 ![rosepine](assets/rosepine.png)
 

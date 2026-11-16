@@ -142,6 +142,10 @@ bind M-t run "~/.config/tmux/scripts/theme.sh next"
 bind B display-popup -E -w 85% -h 85% -T '  system ' btop
 bind W display-popup -E -w 85% -h 75% -T '  jump ' ~/.config/tmux/scripts/jump.sh
 
+# public IP in neon-hud/rosepine is hidden by default (screen sharing); <prefix> N
+# toggles it, or add `set -g @show-wan-ip on` here to keep it on
+bind N if -F '#{==:#{@show-wan-ip},on}' 'set -g @show-wan-ip off' 'set -g @show-wan-ip on' \; display 'WAN IP #{?#{==:#{@show-wan-ip},on},shown,hidden}'
+
 
 # -- tpm -----------------------------------------------------------------------
 

@@ -1,7 +1,8 @@
 #!/bin/sh
 # Install this tmux setup on a Mac:
 #   git clone https://github.com/caretak3r/tmux-config ~/.config/tmux && ~/.config/tmux/install.sh
-# Env: TMUX_THEME=<name> picks the first theme (default adventure); SKIP_BREW=1 skips Homebrew.
+# Env: TMUX_THEME=<name> selects the theme (first install defaults to adventure; a
+# re-run keeps the current theme unless TMUX_THEME is set); SKIP_BREW=1 skips Homebrew.
 set -eu
 
 conf="$HOME/.config/tmux"
@@ -12,6 +13,11 @@ omt_rev=af33f07134b76134acca9d01eacbdecca9c9cda6 # oh-my-tmux commit this config
 	echo "clone this repo to $conf first" >&2
 	exit 1
 }
+
+# check the theme before changing anything
+theme="${TMUX_THEME:-adventure}"
+case "$theme" in current | _*) theme= ;; esac
+[ -n "$theme" ] && [ -f "$conf/themes/$theme.conf" ] || { echo "no theme '${TMUX_THEME:-}' in $conf/themes" >&2; exit 1; }
 
 if [ "${SKIP_BREW:-}" != 1 ]; then
 	command -v brew >/dev/null || { echo "install Homebrew first: https://brew.sh" >&2; exit 1; }
@@ -32,8 +38,8 @@ if [ -e "$HOME/.tmux.conf" ] || [ -L "$HOME/.tmux.conf" ]; then
 	echo "moved old ~/.tmux.conf aside"
 fi
 
-theme="${TMUX_THEME:-adventure}"
-[ -f "$conf/themes/$theme.conf" ] || { echo "no theme '$theme' in $conf/themes" >&2; exit 1; }
-[ -e "$conf/themes/current.conf" ] || ln -s "$theme.conf" "$conf/themes/current.conf"
+if [ -n "${TMUX_THEME:-}" ] || [ ! -e "$conf/themes/current.conf" ]; then
+	ln -sfn "$theme.conf" "$conf/themes/current.conf"
+fi
 
 echo "done: start tmux; plugins install on first launch (prefix is C-a, themes on C-a C-t)"
