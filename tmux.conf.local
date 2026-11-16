@@ -141,6 +141,7 @@ bind M-t run "~/.config/tmux/scripts/theme.sh next"
 # popups pick up the theme's popup-border-* styles
 bind B display-popup -E -w 85% -h 85% -T '  system ' btop
 bind W display-popup -E -w 85% -h 75% -T '  jump ' ~/.config/tmux/scripts/jump.sh
+bind A run "~/.config/tmux/scripts/ooo.sh toggle"
 
 
 # -- tpm -----------------------------------------------------------------------

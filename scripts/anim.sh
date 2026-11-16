@@ -7,11 +7,9 @@
 #   anim.sh train <width> <colour>      logic-analyzer square wave scrolling left
 #   anim.sh rainbow <text> <colours..>  text with a colour band sliding through it
 #   anim.sh cycle <secs> <items..>      show the next item every <secs> seconds
-#   anim.sh walk <width> <hero> <ground> <ground-colour> <hero-colour>
-#                                       hero pacing over a comma-separated ground pattern
-#   anim.sh stretch <max> <colour>      Jake-style arm stretching out and back
 
-# tmux jobs may run without a UTF-8 locale; awk then counts bytes instead of characters
+# tmux jobs may run without a UTF-8 locale; awk then counts bytes instead of characters.
+# Multibyte sprites live in ooo.pl instead: this awk mangles them even with the locale set.
 export LC_ALL=en_US.UTF-8
 t=$(date +%s)
 case "$1" in
@@ -54,29 +52,5 @@ cycle)
 	i=$((t / p % $# + 1))
 	eval "s=\${$i}"
 	printf '%s' "$s"
-	;;
-# This awk mis-handles multibyte -v strings (byte lengths, garbled substr), so the hero
-# width comes from wc -m and the ground is split into tokens rather than sliced.
-walk)
-	hl=$(printf '%s' "$3" | wc -m | tr -d ' ')
-	awk -v t="$t" -v w="$2" -v hero="$3" -v hl="$hl" -v g="$4" -v gc="$5" -v hc="$6" 'BEGIN {
-		gl = split(g, gt, ","); span = w - hl
-		p = t % (2 * span); if (p > span) p = 2 * span - p
-		s = "#[fg=#" gc "]"
-		for (i = 0; i < p; i++) s = s gt[i % gl + 1]
-		s = s "#[fg=#" hc "]" hero "#[fg=#" gc "]"
-		for (i = p + hl; i < w; i++) s = s gt[i % gl + 1]
-		print s
-	}'
-	;;
-stretch)
-	awk -v t="$t" -v m="${2:-8}" -v c="$3" 'BEGIN {
-		k = t % (2 * m); if (k > m) k = 2 * m - k
-		s = "#[fg=#" c "](◕ᴥ◕)"
-		for (i = 0; i < k; i++) s = s "━"
-		s = s "☞"
-		for (i = k; i < m; i++) s = s " "
-		print s
-	}'
 	;;
 esac
