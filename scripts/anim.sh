@@ -4,6 +4,7 @@
 #   anim.sh scan <width> <hot> <dim>    KITT scanner bouncing across <width> cells
 #   anim.sh pulse <on> <off> [glyph]    glyph alternating between two colours
 #   anim.sh spin <colour>               braille spinner
+#   anim.sh train <width> <colour>      logic-analyzer square wave scrolling left
 
 t=$(date +%s)
 case "$1" in
@@ -26,5 +27,12 @@ spin)
 	c=$1; shift
 	eval "f=\${$((t % 10 + 1))}"
 	printf '#[fg=#%s]%s' "$c" "$f"
+	;;
+train)
+	awk -v t="$t" -v w="${2:-16}" -v c="$3" 'BEGIN {
+		p = "0011010001110100101100011010"; n = length(p)
+		printf "#[fg=#%s]", c
+		for (i = 0; i < w; i++) printf "%s", (substr(p, (t + i) % n + 1, 1) == "1" ? "⎺" : "⎽")
+	}'
 	;;
 esac
